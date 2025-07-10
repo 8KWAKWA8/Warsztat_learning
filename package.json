@@ -1,0 +1,24 @@
+{
+  "name": "warsztat_learning",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev:be": "pnpm --filter backend dev",
+    "dev:fe": "pnpm --filter frontend dev",
+    "dev": "concurrently \"pnpm:dev:fe\" \"pnpm:dev:be\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/8KWAKWA8/Warsztat_learning.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/8KWAKWA8/Warsztat_learning/issues"
+  },
+  "homepage": "https://github.com/8KWAKWA8/Warsztat_learning#readme",
+  "description": "",
+  "dependencies": {
+    "concurrently": "^9.2.0"
+  }
+}

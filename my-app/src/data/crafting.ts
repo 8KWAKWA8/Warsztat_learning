@@ -1,98 +1,95 @@
-export type ItemType =
-  | 'Wood'
-  | 'Stone'
-  | 'Plank'
-  | 'Stick'
-  | 'Axe'
-  | 'Pickaxe'
-  | 'Fire'
-  | 'Coal'
-  | 'Torch'
-  | 'Campfire'
-  | 'Bow'
-  | 'Arrow'
-  | 'String'
-  | 'Net'
-  | 'Spear'
-  | 'Hammer'
-  | 'Rope';
+import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
+import type { AppRouter } from 'backend';
+
+export type Item = {
+  id: number;
+  name: string; 
+  emote: string;
+};
+
+export type Recipe = {
+  id: number;
+  ingredientA: string;
+  ingredientB: string;
+  result: string;
+};
 
 export type CraftingRecipe = {
-  ingredients: [ItemType, ItemType];
-  result: ItemType;
+  ingredients: [string, string];
+  result: string;
 };
 
-export const craftingRecipes: CraftingRecipe[] = [
-  { ingredients: ['Wood', 'Stone'], result: 'Pickaxe' },
-  { ingredients: ['Wood', 'Wood'], result: 'Plank' },
-  { ingredients: ['Plank', 'Plank'], result: 'Stick' },
-  { ingredients: ['Stick', 'Stone'], result: 'Axe' },
-  { ingredients: ['Wood', 'Plank'], result: 'Fire' },
-  { ingredients: ['Fire', 'Wood'], result: 'Coal' },
-  { ingredients: ['Stick', 'Coal'], result: 'Torch' },
-  { ingredients: ['Fire', 'Stone'], result: 'Campfire' },
-  { ingredients: ['Stick', 'Stick'], result: 'String' },
-  { ingredients: ['Stick', 'String'], result: 'Bow' },
-  { ingredients: ['Stone', 'Stick'], result: 'Spear' },
-  { ingredients: ['Plank', 'Stick'], result: 'Rope' },
-];
 
-export const itemEmotes: Record<ItemType, string> = {
-  Wood: "🌲",
-  Stone: "🪨",
-  Plank: "🪵",
-  Stick: "🦯",
-  Axe: "🪓",
-  Pickaxe: "⛏️",
-  Fire: "🔥",
-  Coal: "⚫",
-  Torch: "🔥",
-  Campfire: "🏕️",
-  Bow: "🏹",
-  Arrow: "🏹",
-  String: "🧵",
-  Net: "🕸️",
-  Spear: "🗡️",
-  Hammer: "🔨",
-  Rope: "🪢",
-};
+const trpc = createTRPCProxyClient<AppRouter>({
+  links: [
+    httpBatchLink({
+      url: 'http://localhost:3001/',
+    }),
+  ],
+});
 
-const generatedRecipes: CraftingRecipe[] = [];
 
-import { suggestRecipe, type OllamaRecipeResult } from '../ollama-recipe-helper';
+export async function getAllItems(): Promise<Item[]> {
+  const items = await trpc.getItems.query();
+  return items;
+}
+
+export async function createItem(name: string, emote: string): Promise<Item> {
+  return await trpc.createItem.mutate({ name, emote });
+}
+
+export async function getAllRecipes(): Promise<Recipe[]> {
+  return await trpc.getRecipes.query();
+}
+
+export async function createRecipe(
+  ingredientA: string,
+  ingredientB: string,
+  result: string,
+
+): Promise<Recipe> {
+  return await trpc.createRecipe.mutate({
+    ingredientA,
+    ingredientB,
+    result,
+  });
+}
+
 
 export async function findOrCreateRecipe(
-  a: ItemType,
-  b: ItemType
+  a: string,
+  b: string
 ): Promise<CraftingRecipe | undefined> {
-  let recipe =
-    craftingRecipes.find(
-      r =>
-        (r.ingredients[0] === a && r.ingredients[1] === b) ||
-        (r.ingredients[0] === b && r.ingredients[1] === a)
-    ) ||
-    generatedRecipes.find(
-      r =>
-        (r.ingredients[0] === a && r.ingredients[1] === b) ||
-        (r.ingredients[0] === b && r.ingredients[1] === a)
-    );
+  const recipes = await getAllRecipes();
 
-  if (recipe) return recipe;
+  const found = recipes.find(
+    (r) =>
+      (r.ingredientA === a && r.ingredientB === b) ||
+      (r.ingredientA === b && r.ingredientB === a)
+  );
+  if (found) {
+    return {
+      ingredients: [found.ingredientA, found.ingredientB],
+      result: found.result,
+    };
+  }
 
+  const { suggestRecipe } = await import('../ollama-recipe-helper');
   const result = await suggestRecipe(a, b);
   if (!result) return undefined;
 
-  // result.name is the new item name, result.emote is the emoji
-  const newItem = result.name as ItemType;
-  if (!(newItem in itemEmotes)) {
-    itemEmotes[newItem] = result.emote || itemEmotes[a];
+  const items = await getAllItems();
+  const existingItem = items.find(item => item.name === result.name);
+
+  if (!existingItem) {
+    await createItem(result.name, result.emote || '');
   }
 
-  recipe = { ingredients: [a, b], result: newItem };
-  generatedRecipes.push(recipe);
-  return recipe;
+  await createRecipe(a, b, result.name);
+
+  return {
+    ingredients: [a, b],
+    result: result.name,
+  };
 }
 
-export function getAllRecipes() {
-  return [...craftingRecipes, ...generatedRecipes];
-}

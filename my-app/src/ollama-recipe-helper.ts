@@ -4,7 +4,7 @@ const MODEL = 'llama3.2-vision';
 type OllamaRecipeResult = { name: string; emote: string | null };
 
 async function suggestRecipe(ingredientA: string, ingredientB: string): Promise<OllamaRecipeResult | null> {
-  const prompt = `Suggest a creative crafting recipe result for combining "${ingredientA}" and "${ingredientB}" in my crafting game. Respond with only the name of the resulting item and a fitting emoji for it, separated by "::". Try not to repeat existing items. Also don't use the words that the other two ingredients are part of. Example: "Magic Dust::✨" DON'T add quotation marks to the names or emotes. And only use one and the most fitting emoji to the item. Try to make the recipes makes sens, the could be able to make made with one another in real life or have a close resemblance.`;
+  const prompt = `Suggest a creative crafting recipe result for combining "${ingredientA}" and "${ingredientB}" in my crafting game. Respond with only the name of the resulting item and a fitting emoji for it, separated by "::". Try not to repeat existing items. Also don't use the words that the other two ingredients are part of. Example: "Magic Dust::✨" DON'T add quotation marks to the names or emotes. ONLY use one emote per item and the most fitting emoji to the item. Try to make the recipes makes sens, the could be able to make made with one another in real life or have a close resemblance.`;
 
   try {
     const response = await fetch(OLLAMA_URL, {
@@ -21,12 +21,10 @@ async function suggestRecipe(ingredientA: string, ingredientB: string): Promise<
     });
 
     if (!response.ok) {
-      console.error('Ollama API error:', response.statusText);
       return null;
     }
 
     const data = await response.json();
-    console.log('Ollama API response:', data);
 
     let text: string | undefined;
     if (typeof data?.response === 'string') {
@@ -36,7 +34,6 @@ async function suggestRecipe(ingredientA: string, ingredientB: string): Promise<
     }
     if (!text) return null;
 
-    // Expecting format: Name::Emote
     const [name, emote] = text.split('::').map(s => s.trim());
     if (!name) return null;
     return { name, emote: emote || null };

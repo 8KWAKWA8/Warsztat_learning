@@ -68,7 +68,7 @@ export const sidebar = style({
   boxShadow: '0 8px 32px 0 rgba(60, 40, 10, 0.25), 0 0 0 4px #e2c690 inset',
   fontFamily: '"Papyrus", "Caveat", "Comic Sans MS", cursive, serif',
   color: '#5c4326',
-  overflow: 'hidden',
+  overflow: 'auto',
 });
 
 export const sidebarButtonsGrid = style({

@@ -1,5 +1,5 @@
 {
-  "name": "vite-template-solid",
+  "name": "frontend",
   "version": "0.0.0",
   "description": "",
   "type": "module",
@@ -21,6 +21,8 @@
   "dependencies": {
     "node-fetch": "^3.3.2",
     "solid-js": "^1.9.5",
-    "vinxi": "^0.5.7"
+    "vinxi": "^0.5.7",
+    "@trpc/client": "^11.4.3",
+    "backend": "workspace:*"
   }
 }

@@ -1,0 +1,87 @@
+# ===================================================================
+# General & OS-Specific
+# ===================================================================
+ 
+# Operating System generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+ 
+# ===================================================================
+# IDEs and Editors
+# ===================================================================
+ 
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+ 
+
+# JetBrains
+.idea/
+ 
+# ===================================================================
+# Node.js & PNPM
+# ===================================================================
+ 
+# Dependencies
+# This is the most important rule. It ignores all node_modules folders
+# throughout the entire monorepo.
+**/node_modules/
+node_modules/
+ 
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+ 
+# Lockfiles from other package managers
+# We are using pnpm, so we ignore lockfiles from npm and yarn.
+package-lock.json
+yarn.lock
+ 
+# ===================================================================
+# Build Artifacts & Caches
+# ===================================================================
+ 
+# Compiled output folders for all packages (frontend, backend, shared)
+**/dist/
+dist/
+ 
+# TypeScript build info cache file
+# This is generated when using "composite": true in tsconfig.
+**/tsconfig.tsbuildinfo
+*.tsbuildinfo
+ 
+# Vite-specific cache
+# For your SolidJS frontend project
+.vite/
+ 
+# ===================================================================
+# Environment & Configuration
+# ===================================================================
+ 
+# Environment variables
+# This file contains sensitive information like database connection strings.
+# It should NEVER be committed to the repository.
+.env
+.env.*
+!.env.example
+ 
+# ===================================================================
+# Test & Coverage Reports
+# ===================================================================
+ 
+coverage/
+.nyc_output/
