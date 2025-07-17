@@ -6,6 +6,7 @@ import DraggableComponent from './components/draggable_component';
 import {
   getAllItems,
   findOrCreateRecipe,
+  setItemDiscovered,
   type Item,
 } from './data/crafting';
 
@@ -30,17 +31,34 @@ const App: Component = () => {
   const [craftingInProgress, setCraftingInProgress] = createSignal(false);
   const [search, setSearch] = createSignal('');
 
+const syncDiscoveredToBackend = async () => {
+  const all = items();
+  const discoveredNames = discovered();
 
+  await Promise.all(
+    all.map(item =>
+      setItemDiscovered(item.id, discoveredNames.includes(item.name))
+    )
+  );
+};
 
-  // Load items and recipes on mount
-  onMount(async () => {
+onMount(async () => {
   const backendItems = await getAllItems();
   setItems(backendItems);
+  const alreadyDiscovered = backendItems.filter(i => (i as any).discovered).map(i => i.name);
 
-  // Ensure at least first 4 items are discovered initially
-  const initialDiscovered = backendItems.slice(0, 4).map(i => i.name);
-  setDiscovered(initialDiscovered);
+
+  if (alreadyDiscovered.length > 0) {
+    setDiscovered(alreadyDiscovered);
+  } else {
+    
+    const initialDiscovered = backendItems.slice(0, 4).map(i => i.name);
+    setDiscovered(initialDiscovered);
+
+    await syncDiscoveredToBackend();
+  }
 });
+
 
   const generateId = (itemName: string) => {
     const existingIds = components().filter(c => c.itemName === itemName).length;
@@ -141,6 +159,7 @@ const App: Component = () => {
         setDiscovered(prev =>
           prev.includes(craftedItemName) ? prev : [...prev, craftedItemName]
         );
+        await syncDiscoveredToBackend();
       }
     }
     setCraftingInProgress(false);

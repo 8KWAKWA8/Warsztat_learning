@@ -1,9 +1,9 @@
 const OLLAMA_URL = 'http://127.0.0.1:11434/api/generate';
 const MODEL = 'llama3.2-vision';
 
-type OllamaRecipeResult = { name: string; emote: string | null };
+ type OllamaRecipeResult = { name: string; emote: string | null };
 
-async function suggestRecipe(ingredientA: string, ingredientB: string): Promise<OllamaRecipeResult | null> {
+ async function suggestRecipe(ingredientA: string, ingredientB: string): Promise<OllamaRecipeResult | null> {
   const prompt = `Suggest a creative crafting recipe result for combining "${ingredientA}" and "${ingredientB}" in my crafting game. Respond with only the name of the resulting item and a fitting emoji for it, separated by "::". Try not to repeat existing items. Also don't use the words that the other two ingredients are part of. Example: "Magic Dust::✨" DON'T add quotation marks to the names or emotes. ONLY use one emote per item and the most fitting emoji to the item. Try to make the recipes makes sens, the could be able to make made with one another in real life or have a close resemblance.`;
 
   try {

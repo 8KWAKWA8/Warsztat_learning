@@ -1,6 +1,5 @@
-import { PrismaClient } from './generated/prisma';
+import { prisma } from './src/prismaclient';
 
-const prisma = new PrismaClient();
 
 const items = [
   { name: 'Wood', emote: '🌲' },

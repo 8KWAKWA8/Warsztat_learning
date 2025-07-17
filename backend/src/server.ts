@@ -1,6 +1,6 @@
 import http from 'http';
 import { createHTTPHandler } from '@trpc/server/adapters/standalone';
-import { appRouter } from './router';
+import { appRouter } from './trpc/router.js';
 
 const handler = createHTTPHandler({
   router: appRouter,

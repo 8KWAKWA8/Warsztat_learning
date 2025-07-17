@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "target": "es2024",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "jsx": "preserve",
@@ -12,7 +12,20 @@
     "noEmit": true,
     "isolatedModules": true,
     "composite": true,
+    "paths": {
+      "backend": [
+        "../backend/src"
+      ],
+   "@trpc/server": [
+        "../backend/node_modules/@trpc/server"
+      ],
+      "@trpc/server/*": [
+        "../backend/node_modules/@trpc/server/*"
+      ]},
+    "preserveSymlinks": true,
+
   },
+
   "references": [
     {
       "path": "../backend"

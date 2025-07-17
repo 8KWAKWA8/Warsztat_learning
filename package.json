@@ -5,7 +5,9 @@
   "scripts": {
     "dev:be": "pnpm --filter backend dev",
     "dev:fe": "pnpm --filter frontend dev",
-    "dev": "concurrently \"pnpm:dev:fe\" \"pnpm:dev:be\""
+    "dev": "concurrently \"pnpm:dev:fe\" \"pnpm:dev:be\"",
+    "lint": "biome check .",
+    "format": "biome check --write ."
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,13 @@
   "description": "",
   "dependencies": {
     "concurrently": "^9.2.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@trpc/server": "11.4.3"
+    }
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.1.1"
   }
 }

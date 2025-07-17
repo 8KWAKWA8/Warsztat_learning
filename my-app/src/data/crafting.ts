@@ -1,5 +1,6 @@
-import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
+import { createTRPCProxyClient, httpBatchLink, TRPCClient } from '@trpc/client';
 import type { AppRouter } from 'backend';
+import { suggestRecipe } from 'backend';
 
 export type Item = {
   id: number;
@@ -28,6 +29,9 @@ const trpc = createTRPCProxyClient<AppRouter>({
   ],
 });
 
+export async function setItemDiscovered(id: number, discovered: boolean): Promise<Item> {
+  return await trpc.setItemDiscovered.mutate({ id, discovered });
+}
 
 export async function getAllItems(): Promise<Item[]> {
   const items = await trpc.getItems.query();
@@ -74,7 +78,6 @@ export async function findOrCreateRecipe(
     };
   }
 
-  const { suggestRecipe } = await import('../ollama-recipe-helper');
   const result = await suggestRecipe(a, b);
   if (!result) return undefined;
 

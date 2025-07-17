@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "./generated/prisma"
 }
 
@@ -12,6 +12,7 @@ model Item {
   id    Int    @id @default(autoincrement())
   name  String @unique
   emote String
+  discovered Boolean @default(false)
 }
 
 model Recipe {

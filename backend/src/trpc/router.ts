@@ -1,16 +1,12 @@
 import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
-import { PrismaClient } from '../../generated/prisma';
+import { prisma } from '../prismaclient.js';
 
-export const prisma = new PrismaClient();
 
 const t = initTRPC.create();
 const publicProcedure = t.procedure;
 
 export const appRouter = t.router({
-  foo: publicProcedure.query(() => {
-    return 'Hello from tRPC!';
-  }),
   getRecipes: publicProcedure.query(async () => {
     return prisma.recipe.findMany();
   }),
@@ -42,6 +38,21 @@ export const appRouter = t.router({
     .mutation(async ({ input }) => {
       return prisma.item.create({ data: input });
     }),
+ setItemDiscovered: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        discovered: z.boolean(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return prisma.item.update({
+        where: { id: input.id },
+        data: { discovered: input.discovered },
+      });
+    }),
+    
 });
 
 export type AppRouter = typeof appRouter;
+

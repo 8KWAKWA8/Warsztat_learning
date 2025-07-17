@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "es2024",
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "esModuleInterop": true,
@@ -11,7 +11,11 @@
     "declaration": true,
     "composite": true,
     "rootDir": "./src",
+    "preserveSymlinks": true,
+    "baseUrl": ".",
+  
   },
-
-  "include": ["src"]
+  "include": [
+    "src"
+  ]
 }
