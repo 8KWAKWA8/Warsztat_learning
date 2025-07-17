@@ -1,21 +1,18 @@
 {
-  "compilerOptions": {
-    "target": "es2024",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "outDir": "./dist",
-    "declaration": true,
-    "composite": true,
-    "rootDir": "./src",
-    "preserveSymlinks": true,
-    "baseUrl": ".",
-  
-  },
-  "include": [
-    "src"
-  ]
+	"compilerOptions": {
+		"target": "es2024",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"skipLibCheck": true,
+		"outDir": "./dist",
+		"declaration": true,
+		"composite": true,
+		"rootDir": "./src",
+		"preserveSymlinks": true,
+		"baseUrl": "."
+	},
+	"include": ["src"]
 }

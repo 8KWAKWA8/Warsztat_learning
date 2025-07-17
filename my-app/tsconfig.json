@@ -1,34 +1,28 @@
 {
-  "compilerOptions": {
-    "strict": true,
-    "target": "es2024",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
-    "types": ["vite/client"],
-    "noEmit": true,
-    "isolatedModules": true,
-    "composite": true,
-    "paths": {
-      "backend": [
-        "../backend/src"
-      ],
-   "@trpc/server": [
-        "../backend/node_modules/@trpc/server"
-      ],
-      "@trpc/server/*": [
-        "../backend/node_modules/@trpc/server/*"
-      ]},
-    "preserveSymlinks": true,
+	"compilerOptions": {
+		"strict": true,
+		"target": "es2024",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"jsx": "preserve",
+		"jsxImportSource": "solid-js",
+		"types": ["vite/client"],
+		"noEmit": true,
+		"isolatedModules": true,
+		"composite": true,
+		"paths": {
+			"backend": ["../backend/src"],
+			"@trpc/server": ["../backend/node_modules/@trpc/server"],
+			"@trpc/server/*": ["../backend/node_modules/@trpc/server/*"]
+		},
+		"preserveSymlinks": true
+	},
 
-  },
-
-  "references": [
-    {
-      "path": "../backend"
-    }
-  ]
+	"references": [
+		{
+			"path": "../backend"
+		}
+	]
 }
